@@ -1,5 +1,5 @@
 module "nlb" {
-  source = "../dc33-ec2-deployment"  # or GitHub URL
+  source = "../terraform-ec2-asg-lb"  # or GitHub URL
 
   name                     = "nlb-deployment"
   intended_access_protocol = "TCP"

@@ -4,7 +4,7 @@ This Terraform module lets CTF authors easily deploy EC2-based challenges behind
 It’s split into two parts:
 
 ```
-📁 dc33-ec2-asg-module/     --> The reusable Terraform module
+📁 terraform-ec2-asg-lb/     --> The reusable Terraform module
 📁 test-alb/                --> A sample project that calls the alb module
 📁 test-nlb/                --> A sample project that calls the nlb module
 ```
@@ -25,7 +25,7 @@ It’s split into two parts:
 
 ```
 .
-├── dc33-ec2-asg-module/
+├── terraform-ec2-asg-lb/
 │   ├── main.tf
 │   ├── outputs.tf
 │   ├── variables.tf
@@ -49,19 +49,19 @@ In your Terraform root (`test-alb/` or `test-nlb/`):
 
 ```hcl
 module "asg" {
-  source = "../dc33-ec2-asg-module"
+  source = "../terraform-ec2-asg-lb"
 
-  name                     = "ctf-challenge-1"
+  name                     = "testlb"
   intended_access_protocol = "HTTP"             # Or "TCP"
   user_data                = file("setup.sh")
 
-  ami_id           = "ami-0abc123456789xyz"
+  ami_id           = "ami-xxxxxxxxxxxxxxxxx"
   instance_type    = "t3.micro"
   availability_zones = ["us-west-2a"]
-  vpc_id             = "vpc-0123456789abcdef0"
-  lb_subnets         = ["subnet-123", "subnet-456"]
+  vpc_id             = "vpc-xxxxxxxxxxxxxxxxx"
+  lb_subnets         = ["subnet-xxxxxxxxxxxxxxxxx", "subnet-xxxxxxxxxxxxxxxxx"]
 # lb_port            = 443    # While using NLB, mention port number otherwise default PORT:80
-  security_group_ids = ["sg-0123abcd"]
+  security_group_ids = ["sg-xxxxxxxxxxxxxxxxx"]
   scale_up_adjustment      = 2
   scale_down_adjustment    = -1
 
@@ -75,7 +75,7 @@ module "asg" {
 
 Then run:
 ```bash
-cd test-alb OR cd test=nlb
+cd test-alb OR cd test-nlb
 terraform init
 terraform apply
 ```
@@ -97,15 +97,22 @@ After deployment, you’ll see:
 
 ## 🧾 Module Inputs
 
-See `dc33-ec2-asg-module/variables.tf` for full list. Highlights:
+See `terraform-ec2-asg-lb/variables.tf` for full list. Highlights:
 
 | Variable                  | Description                                   |
 |---------------------------|-----------------------------------------------|
 | `intended_access_protocol`| "HTTP" (for ALB) or "TCP" (for NLB)           |
 | `user_data`               | Startup script (e.g. `file("setup.sh")`)      |
 | `lb_subnets`              | Subnets for LB (must be public)               |
-| `lb_port`                 | Default is 80, can be changed for NLB         |
+| `lb_port`                 | Listener port for the load balancer. Default is 80 (HTTP). For NLB, set this to the desired TCP port (e.g., 443) |
 | `security_group_ids`      | EC2 Security Group(s)                         |
+| `alb_security_group_ids`  | (Optional) ALB security group IDs. If not provided, AWS uses the default VPC security group. Ignored for NLB  |
+
+
+**Security Groups:**
+- ALB: If `alb_security_group_ids` is not set, AWS attaches the default VPC SG. Make sure it allows inbound on the listener port.
+- NLB: Does not support security groups. Ensure your EC2 SG allows inbound from the NLB on the listener port.
+
 
 ---
 
