@@ -49,7 +49,7 @@ In your Terraform root (`test-alb/` or `test-nlb/`):
 
 ```hcl
 module "asg" {
-  source = "../terraform-ec2-asg-lb"
+  source = "git::https://github.com/dhn37/terraform-ec2-asg-lb.git//terraform-ec2-asg-lb"
 
   name                     = "testlb"
   intended_access_protocol = "HTTP"             # Or "TCP"
@@ -97,7 +97,73 @@ After deployment, you’ll see:
 
 ## 🧾 Module Inputs
 
-See `terraform-ec2-asg-lb/variables.tf` for full list. Highlights:
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.3.0 |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_autoscaling_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group) | resource |
+| [aws_autoscaling_policy.scale_down](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_policy) | resource |
+| [aws_autoscaling_policy.scale_up](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_policy) | resource |
+| [aws_cloudwatch_metric_alarm.high_cpu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.low_cpu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_launch_template.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
+| [aws_lb.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb) | resource |
+| [aws_lb_listener.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_listener.nlb_tcp](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
+| [aws_lb_target_group.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_alb_security_group_ids"></a> [alb\_security\_group\_ids](#input\_alb\_security\_group\_ids) | List of security group IDs to attach to the ALB. If not specified, AWS will use the default VPC SG. | `list(string)` | `null` | no |
+| <a name="input_ami_id"></a> [ami\_id](#input\_ami\_id) | AMI ID to use in EC2 | `string` | n/a | yes |
+| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | List of AZs | `list(string)` | n/a | yes |
+| <a name="input_desired_capacity"></a> [desired\_capacity](#input\_desired\_capacity) | Desired number of EC2 instances | `number` | `1` | no |
+| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 instance type | `string` | n/a | yes |
+| <a name="input_intended_access_protocol"></a> [intended\_access\_protocol](#input\_intended\_access\_protocol) | HTTP or TCP — determines LB protocol | `string` | n/a | yes |
+| <a name="input_lb_port"></a> [lb\_port](#input\_lb\_port) | Port the LB listens on | `number` | `80` | no |
+| <a name="input_lb_subnets"></a> [lb\_subnets](#input\_lb\_subnets) | Subnets for Load Balancer | `list(string)` | n/a | yes |
+| <a name="input_max_size"></a> [max\_size](#input\_max\_size) | Maximum number of instances | `number` | `2` | no |
+| <a name="input_min_size"></a> [min\_size](#input\_min\_size) | Minimum number of instances | `number` | `1` | no |
+| <a name="input_name"></a> [name](#input\_name) | Prefix for naming resources | `string` | n/a | yes |
+| <a name="input_scale_down_adjustment"></a> [scale\_down\_adjustment](#input\_scale\_down\_adjustment) | Number of instances to scale down by | `number` | `-1` | no |
+| <a name="input_scale_down_threshold"></a> [scale\_down\_threshold](#input\_scale\_down\_threshold) | CPU % threshold to scale down | `number` | `20` | no |
+| <a name="input_scale_up_adjustment"></a> [scale\_up\_adjustment](#input\_scale\_up\_adjustment) | Number of instances to scale up by | `number` | `2` | no |
+| <a name="input_scale_up_threshold"></a> [scale\_up\_threshold](#input\_scale\_up\_threshold) | CPU % threshold to scale up | `number` | `70` | no |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | Security groups for EC2 | `list(string)` | n/a | yes |
+| <a name="input_user_data"></a> [user\_data](#input\_user\_data) | Path to data script for EC2 instance | `string` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID where ASG and LB should run | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_autoscaling_group_name"></a> [autoscaling\_group\_name](#output\_autoscaling\_group\_name) | Name of the Auto Scaling Group |
+| <a name="output_launch_template_id"></a> [launch\_template\_id](#output\_launch\_template\_id) | Launch Template ID |
+| <a name="output_load_balancer_dns"></a> [load\_balancer\_dns](#output\_load\_balancer\_dns) | DNS name of the Load Balancer |
+| <a name="output_load_balancer_type"></a> [load\_balancer\_type](#output\_load\_balancer\_type) | Type of Load Balancer (application or network) |
+<!-- END_TF_DOCS -->
+
+See [`terraform-ec2-asg-lb/variables.tf`](terraform-ec2-asg-lb/variables.tf) for full list. Highlights:
 
 | Variable                  | Description                                   |
 |---------------------------|-----------------------------------------------|
