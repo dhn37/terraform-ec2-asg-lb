@@ -11,13 +11,13 @@ It’s split into two parts:
 
 ---
 
-## 📦 Features
+##  Features
 
-- ✅ Automatic launch template generation
-- ✅ Autoscaling based on CPU usage
-- ✅ Load balancer (ALB or NLB) based on protocol
-- ✅ Easy user_data injection
-- ✅ Clean separation of module + usage
+- Automatic launch template generation
+- Autoscaling based on CPU usage
+- Load balancer (ALB or NLB) based on protocol
+- Easy user_data injection
+- Clean separation of module + usage
 
 ---
 
@@ -82,7 +82,7 @@ terraform apply
 
 ---
 
-## 📤 Outputs
+## Outputs
 
 After deployment, you’ll see:
 
@@ -95,7 +95,7 @@ After deployment, you’ll see:
 
 ---
 
-## 🧾 Module Inputs
+## Module Inputs
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -182,5 +182,5 @@ See [`terraform-ec2-asg-lb/variables.tf`](terraform-ec2-asg-lb/variables.tf) for
 
 ---
 
-## 👤 Author  
+## Author  
 - [Dhanush Nair](https://www.linkedin.com/in/dhn37/)
