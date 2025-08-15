@@ -1,4 +1,4 @@
-# 🚀 EC2 Auto Scaling Group Terraform Module  
+# EC2 Auto Scaling Group Terraform Module  
 
 This Terraform module lets CTF authors easily deploy EC2-based challenges behind an Auto Scaling Group (ASG), optionally fronted by an ALB (for HTTP) or NLB (for TCP).  
 It’s split into two parts:
