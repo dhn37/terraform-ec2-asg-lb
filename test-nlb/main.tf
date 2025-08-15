@@ -1,4 +1,4 @@
-module "nlb" {
+module "asg" {
   source = "../terraform-ec2-asg-lb"  # or GitHub URL
 
   name                     = "nlb-deployment"
