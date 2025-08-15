@@ -21,7 +21,7 @@ It’s split into two parts:
 
 ---
 
-## 🗂 Folder Structure
+## Folder Structure
 
 ```
 .
@@ -43,7 +43,7 @@ It’s split into two parts:
 
 ---
 
-## 🛠 How to Use
+## How to Use
 
 In your Terraform root (`test-alb/` or `test-nlb/`):
 
